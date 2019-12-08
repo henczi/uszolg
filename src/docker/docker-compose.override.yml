@@ -1,6 +1,28 @@
 version: '3.4'
 
 services:
+  company:
+    tty: true
+    ports:
+      - "10083:80"
+    working_dir: /app
+    volumes:
+      - ../company:/app
+    environment:
+      - NODE_ENV=development
+      - CHOKIDAR_USEPOLLING=true
+
+  poi:
+    tty: true
+    ports:
+      - "10082:80"
+    working_dir: /app
+    volumes:
+      - ../poi:/app
+    environment:
+      - NODE_ENV=development
+      - CHOKIDAR_USEPOLLING=true
+
   usage:
     tty: true
     ports:

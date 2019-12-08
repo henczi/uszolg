@@ -3,12 +3,16 @@
 import json
 from flask import Flask, jsonify, request
 app = Flask(__name__)
+import os
 
-@app.route('/')
+prefix = os.getenv('PREFIX', '/api/feedback')
+print('Prefix: ' + prefix)
+
+@app.route(prefix)
 def root():
     return jsonify(status="OK"), 200
 
-@app.route('/send', methods=['POST'])
+@app.route(prefix + '/send', methods=['POST'])
 def send():
     fb = request.get_json()
     print(fb)

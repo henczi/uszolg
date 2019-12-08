@@ -1,6 +1,21 @@
 version: '3.4'
 
 services:
+  mongo:
+    image: mongo:4.0.12
+    networks:
+      - micros-network
+    volumes:
+      - micros-mongo-data:/data/db
+  
+  redis:
+    image: redis:5.0.5-alpine
+    command: ["redis-server", "--appendonly", "yes"]
+    networks:
+      - micros-network
+    volumes:
+      - micros-redis-data:/data
+
   apigateway:
     image: traefik:v2.0.1
     ports:
@@ -15,12 +30,40 @@ services:
       - /var/run/docker.sock:/var/run/docker.sock # So that Traefik can listen to the Docker events (see .env file for Windows workaround to make this work)
     networks:
       - micros-network
+  
+  company:
+    image: "${REGISTRY_URL:-micros}/company:${IMAGE_TAG:-latest}"
+    build:
+      context: ../company
+      dockerfile: Dockerfile
+    networks:
+      - micros-network
+    depends_on:
+      - mongo
+    labels:
+      - "traefik.enable=true" # Enable publishing this service by Traefik
+      - "traefik.http.routers.company.rule=PathPrefix(`/api/company`)" # Routing rule
+
+  poi:
+    image: "${REGISTRY_URL:-micros}/poi:${IMAGE_TAG:-latest}"
+    build:
+      context: ../poi
+      dockerfile: Dockerfile
+    networks:
+      - micros-network
+    depends_on:
+      - redis
+    labels:
+      - "traefik.enable=true" # Enable publishing this service by Traefik
+      - "traefik.http.routers.poi.rule=PathPrefix(`/api/poi`)" # Routing rule
 
   feedback:
     image: "${REGISTRY_URL:-micros}/feedback:${IMAGE_TAG:-latest}"
     build:
       context: ../feedback
       dockerfile: Dockerfile
+    environment:
+      - "PREFIX=/api/feedback"
     networks:
       - micros-network
     labels:
@@ -52,3 +95,9 @@ services:
 networks:
   micros-network:
     driver: bridge
+
+volumes:
+  micros-mongo-data:
+    driver: local
+  micros-redis-data:
+    driver: local
