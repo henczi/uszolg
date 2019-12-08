@@ -1,0 +1,43 @@
+version: '3.4'
+
+services:
+  apigateway:
+    image: traefik:v2.0.1
+    ports:
+      - "5080:80" # Port of the API Gateway, which will be the port behind which the system will be published
+      - "5088:8080" # Dashboard of Traefik for troubleshooting
+    command:
+      - "--api.insecure=true"
+      - "--api.dashboard=true"
+      - "--providers.docker=true"
+      - "--providers.docker.exposedbydefault=false"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock # So that Traefik can listen to the Docker events (see .env file for Windows workaround to make this work)
+    networks:
+      - micros-network
+
+  feedback:
+    image: "${REGISTRY_URL:-micros}/feedback:${IMAGE_TAG:-latest}"
+    build:
+      context: ../feedback
+      dockerfile: Dockerfile
+    networks:
+      - micros-network
+    labels:
+      - "traefik.enable=true" # Enable publishing this service by Traefik
+      - "traefik.http.routers.feedback.rule=PathPrefix(`/api/feedback`)" # Routing rule
+
+  userfrontend:
+    image: "${REGISTRY_URL:-micros}/userfrontend:${IMAGE_TAG:-latest}"
+    build:
+      context: ../user-frontend
+      dockerfile: Dockerfile
+    networks:
+      - micros-network
+    labels:
+      - "traefik.enable=true" # Enable publishing this service by Traefik
+      - "traefik.http.routers.userfrontend.rule=PathPrefix(`/`)" # Routing rule
+
+networks:
+  micros-network:
+    driver: bridge

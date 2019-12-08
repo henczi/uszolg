@@ -1,0 +1,28 @@
+version: '3.4'
+
+services:
+  feedback:
+    tty: true
+    ports:
+      - "10081:80"
+    working_dir: /app
+    volumes:
+      - ../feedback:/app
+    environment:
+      - NODE_ENV=development
+      - CHOKIDAR_USEPOLLING=true
+
+  userfrontend:
+    tty: true
+    ports:
+      - "10080:80"
+    working_dir: /app
+    volumes:
+      - ../user-frontend/client:/app
+    environment:
+      - NODE_ENV=development
+      - CHOKIDAR_USEPOLLING=true
+
+networks:
+  micros-network:
+    driver: bridge
