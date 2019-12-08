@@ -27,6 +27,17 @@ services:
       - "traefik.enable=true" # Enable publishing this service by Traefik
       - "traefik.http.routers.feedback.rule=PathPrefix(`/api/feedback`)" # Routing rule
 
+  usage:
+    image: "${REGISTRY_URL:-micros}/usage:${IMAGE_TAG:-latest}"
+    build:
+      context: ../usage
+      dockerfile: Dockerfile
+    networks:
+      - micros-network
+    labels:
+      - "traefik.enable=true" # Enable publishing this service by Traefik
+      - "traefik.http.routers.usage.rule=PathPrefix(`/api/usage`)" # Routing rule
+
   userfrontend:
     image: "${REGISTRY_URL:-micros}/userfrontend:${IMAGE_TAG:-latest}"
     build:

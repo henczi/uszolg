@@ -1,13 +1,13 @@
 version: '3.4'
 
 services:
-  feedback:
+  usage:
     tty: true
     ports:
       - "10081:80"
     working_dir: /app
     volumes:
-      - ../feedback:/app
+      - ../usage:/app
     environment:
       - NODE_ENV=development
       - CHOKIDAR_USEPOLLING=true
