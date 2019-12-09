@@ -2,11 +2,12 @@
   <div id="app" class="d-flex flex-column">
     <Header class="flex-grow-0" style="height: 55px;" @action="headerAction" />
     <div class="flex-grow-1 w-100 position-relative overflow-hidden">
-      <Map v-if="false" class="position-absolute w-100 h-100" :items="items" @select="select" />
+      <Map class="position-absolute w-100 h-100" :items="items" @select="select" />
       <Info
         id="info-box"
         class="position-absolute w-100 h-100"
         v-bind:class="{ active: infoVisible }"
+        :selected="selected"
         @close="closeInfo()"
       />
       <Feedback
@@ -47,12 +48,14 @@ export default {
       this.infoVisible = false;
     },
     openInfo() {
+      this.closeFeedback();
       this.infoVisible = true;
     },
     closeFeedback() {
       this.feedbackVisible = false;
     },
     openFeedback() {
+      this.closeInfo();
       this.feedbackVisible = true;
     },
     headerAction(action) {

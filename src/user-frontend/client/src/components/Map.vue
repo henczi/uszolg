@@ -25,7 +25,7 @@ export default {
   },
   methods: {
     select(idx) {
-      this.$emit('select', idx)
+      this.$emit("select", idx);
     }
   }
 };

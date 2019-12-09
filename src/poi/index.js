@@ -37,7 +37,7 @@ app.post(prefix + '/add', function (req, res, next) {
 		typeof model.lon === "number",
 		typeof model.lat === "number",
 		typeof model.name === "string", model.name.length <= 255,
-		typeof model.company === "string", model.name.length <= 255,
+		typeof model.company === "string", model.company.length <= 255,
 		typeof model.stations === "number",
 		typeof model.kilowatts === "string",
 		typeof model.connector === "string",
