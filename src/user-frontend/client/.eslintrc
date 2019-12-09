@@ -1,0 +1,22 @@
+{
+  "root": true,
+  "extends": [
+    "eslint:recommended",
+    "plugin:vue/essential"
+  ],
+  "globals": {
+    "module": true,
+    "process": true,
+    "require": true
+  },
+  "rules": {
+    "no-console": "off",
+    "no-debugger": "off",
+    "vue/html-closing-bracket-spacing": "off",
+    "vue/html-closing-bracket-newline": "off"
+  },
+  "parserOptions": {
+    "parser": "babel-eslint",
+    "ecmaVersion": 2017
+  }
+}
