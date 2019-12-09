@@ -1,6 +1,6 @@
 <template>
   <GmapMap
-    :center="{lat:47.4979, lng:19.0402}"
+    :center="center"
     :zoom="13"
     map-type-id="roadmap"
     :options="{disableDefaultUI:true}"
@@ -21,6 +21,7 @@
 export default {
   name: "Map",
   props: {
+    center: Object,
     items: Array
   },
   methods: {

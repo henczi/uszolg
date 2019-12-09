@@ -2,7 +2,7 @@
   <div id="app" class="d-flex flex-column">
     <Header class="flex-grow-0" style="height: 55px;" @action="headerAction" />
     <div class="flex-grow-1 w-100 position-relative overflow-hidden">
-      <Map class="position-absolute w-100 h-100" :items="items" @select="select" />
+      <Map class="position-absolute w-100 h-100" :items="items" :center="currPos" @select="select" />
       <Info
         id="info-box"
         class="position-absolute w-100 h-100"
@@ -40,7 +40,8 @@ export default {
       infoVisible: false,
       feedbackVisible: false,
       selected: null,
-      items: [{position:{lat:47.4979, lng:19.0402}}]
+      items: [],
+      currPos: {lat:47.4979, lng:19.0402}
     };
   },
   methods: {
@@ -81,10 +82,11 @@ export default {
     }
   },
   async created() {
-    let {lon, lat} = await this.getCoord();
+    const {lon, lat} = await this.getCoord();
+    this.currPos = { lat: lat, lng: lon };
     const res = (await axios.get('/api/poi/nearby', { params: { lon, lat, dist: 5 }})).data;
     this.items = [
-      { position: { lat: lat, lng: lon }, icon: 'https://developers.google.com/maps/documentation/javascript/examples/full/images/info-i_maps.png'  }, 
+      { position: this.currPos, icon: 'https://developers.google.com/maps/documentation/javascript/examples/full/images/info-i_maps.png'  }, 
       ...res.map(x => ({
         position: { lat: x.lat, lng: x.lon },
         ...x
