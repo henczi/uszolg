@@ -11,6 +11,8 @@ services:
     environment:
       - NODE_ENV=development
       - CHOKIDAR_USEPOLLING=true
+    build:
+      dockerfile: dev.Dockerfile
 
   poi:
     tty: true
@@ -22,6 +24,8 @@ services:
     environment:
       - NODE_ENV=development
       - CHOKIDAR_USEPOLLING=true
+    build:
+      dockerfile: dev.Dockerfile
 
   usage:
     tty: true
@@ -33,6 +37,8 @@ services:
     environment:
       - NODE_ENV=development
       - CHOKIDAR_USEPOLLING=true
+    build:
+      dockerfile: dev.Dockerfile
 
   userfrontend:
     tty: true
@@ -44,6 +50,8 @@ services:
     environment:
       - NODE_ENV=development
       - CHOKIDAR_USEPOLLING=true
+    build:
+      dockerfile: dev.Dockerfile
 
 networks:
   micros-network:

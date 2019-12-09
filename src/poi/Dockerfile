@@ -1,6 +1,6 @@
 FROM node:lts-alpine
 WORKDIR /app
 COPY . .
-RUN npm install && npm install -g nodemon
+RUN npm install
 EXPOSE 80
-CMD ["nodemon", "index.js"]
+CMD ["node", "index.js"]
