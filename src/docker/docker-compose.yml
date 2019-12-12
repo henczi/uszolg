@@ -16,6 +16,14 @@ services:
     volumes:
       - micros-redis-data:/data
 
+  rabbitmq:
+    image: rabbitmq:3-management
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    networks:
+      - micros-network
+
   apigateway:
     image: traefik:v2.0.1
     ports:
@@ -77,6 +85,10 @@ services:
       dockerfile: Dockerfile
     networks:
       - micros-network
+    depends_on:
+      - rabbitmq
+    links:
+      - rabbitmq
     labels:
       - "traefik.enable=true" # Enable publishing this service by Traefik
       - "traefik.http.routers.usage.rule=PathPrefix(`/api/usage`)" # Routing rule
