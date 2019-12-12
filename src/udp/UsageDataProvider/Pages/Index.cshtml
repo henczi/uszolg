@@ -1,0 +1,25 @@
+﻿@page
+@using UsageDataProvider
+@namespace UsageDataProvider.Pages
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+@model IndexModel
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>UsageDataProvider</title>
+</head>
+<body>
+    <h1>UsageDataProvider</h1>
+    @foreach (var item in Model.Usagess) {
+<form method="post">
+    @if (item.Active)
+    {<input type="submit" style="background-color: red" value="Switch @item.Name" />}
+    @if (!item.Active)
+    {<input type="submit" style="background-color: green" value="Switch @item.Name" />}
+    <input type="hidden" name="key" value="@item.Key" />
+</form>
+    }
+</body>
+</html>
