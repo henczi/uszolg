@@ -93,6 +93,23 @@ services:
     labels:
       - "traefik.enable=true" # Enable publishing this service by Traefik
       - "traefik.http.routers.usage.rule=PathPrefix(`/api/usage`)" # Routing rule
+  
+  udp:
+    image: "${REGISTRY_URL:-micros}/udp:${IMAGE_TAG:-latest}"
+    build:
+      context: ../udp/UsageDataProvider/
+      dockerfile: Dockerfile
+    networks:
+      - micros-network
+    environment:
+      - "RABBIT_HOST=rabbitmq"
+    depends_on:
+      - rabbitmq
+    links:
+      - rabbitmq
+    labels:
+      - "traefik.enable=true" # Enable publishing this service by Traefik
+      - "traefik.http.routers.udp.rule=PathPrefix(`/udp`)" # Routing rule
 
   userfrontend:
     image: "${REGISTRY_URL:-micros}/userfrontend:${IMAGE_TAG:-latest}"

@@ -36,6 +36,8 @@ namespace UsageDataProvider.Pages
             if (usage == null) return Page();
 
             usage.Active = !usage.Active;
+            usage.TimeStamp = DateTimeOffset.UtcNow;
+
             try { await _bus.Send(usage); } // Publish - Endpoint not working
             catch(Exception e) { Console.WriteLine(e.Message); }
 

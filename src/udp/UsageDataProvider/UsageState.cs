@@ -10,5 +10,6 @@ namespace UsageDataProvider
         public string Key { get; set; }
         public string Name { get; set; }
         public bool Active { get; set; } = false;
+        public DateTimeOffset TimeStamp { get; set; } = DateTimeOffset.UtcNow;
     }
 }

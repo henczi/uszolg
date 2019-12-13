@@ -14,7 +14,8 @@ namespace UsageDataProvider
 {
     public class Startup
     {
-        private static string host = "localhost";
+        private static string prefix = Environment.GetEnvironmentVariable("PREFIX") ?? "/udp";
+        private static string host = Environment.GetEnvironmentVariable("RABBIT_HOST") ?? "localhost";
         private static string queue = "usage";
         public Startup(IConfiguration configuration)
         {
@@ -26,7 +27,12 @@ namespace UsageDataProvider
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddRazorPages().AddRazorRuntimeCompilation();
+            services.AddRazorPages()
+#if DEBUG
+            .AddRazorRuntimeCompilation()
+#endif
+            ;
+
             services.AddMassTransit(x =>
             {
                 x.AddBus(provider =>
@@ -41,7 +47,7 @@ namespace UsageDataProvider
                         cfg.UseExtensionsLogging(provider.GetRequiredService<ILoggerFactory>());
                     }));
 
-                 EndpointConvention.Map<UsageState>(new Uri("rabbitmq://" + host + "/" +queue));
+                EndpointConvention.Map<UsageState>(new Uri("rabbitmq://" + host + "/" + queue));
             });
         }
 
@@ -58,6 +64,15 @@ namespace UsageDataProvider
             app.UseRouting();
 
             app.UseAuthorization();
+
+            app.Map(prefix, subapp =>
+            {
+                subapp.UseRouting();
+                subapp.UseEndpoints(endpoints =>
+                {
+                    endpoints.MapRazorPages();
+                });
+            });
 
             app.UseEndpoints(endpoints =>
             {
