@@ -1550,6 +1550,7 @@ module.exports = [
 	{
 		"lon": 19.040011,
 		"lat": 47.500987,
+		"key": "1",
 		"name": "Pala utca 2. (e-Mobi, 22kW DC)",
 		"connector": "13",
 		"kilowatts": "",
@@ -1667,6 +1668,7 @@ module.exports = [
 	{
 		"lon": 19.049413,
 		"lat": 47.474592,
+		"key": "3",
 		"name": "Allee P1 (E/D) +P3",
 		"connector": "7,7,7,10,7,7,7,7,7,7,7",
 		"kilowatts": ",,,,,,,,,,",
@@ -2225,6 +2227,7 @@ module.exports = [
 	{
 		"lon": 19.052082,
 		"lat": 47.512906,
+		"key": "2",
 		"name": "NH Hotel Budapest AC",
 		"connector": "7,7,7,7",
 		"kilowatts": ",,,",

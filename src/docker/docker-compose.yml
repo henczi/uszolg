@@ -102,6 +102,7 @@ services:
     networks:
       - micros-network
     environment:
+      - "PREFIX=/udp"
       - "RABBIT_HOST=rabbitmq"
     depends_on:
       - rabbitmq

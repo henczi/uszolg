@@ -7,7 +7,7 @@
   >
     <GmapMarker
       :key="index"
-      v-for="(m, index) in items"
+      v-for="(m, index) in markers"
       :position="m.position"
       :clickable="true"
       :draggable="false"
@@ -22,7 +22,7 @@ export default {
   name: "Map",
   props: {
     center: Object,
-    items: Array
+    markers: Array
   },
   methods: {
     select(idx) {
