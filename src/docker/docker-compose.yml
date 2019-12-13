@@ -97,7 +97,7 @@ services:
   udp:
     image: "${REGISTRY_URL:-micros}/udp:${IMAGE_TAG:-latest}"
     build:
-      context: ../udp/UsageDataProvider/
+      context: ../udp
       dockerfile: Dockerfile
     networks:
       - micros-network
