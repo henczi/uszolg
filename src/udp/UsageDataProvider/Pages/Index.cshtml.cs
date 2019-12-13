@@ -36,10 +36,8 @@ namespace UsageDataProvider.Pages
             if (usage == null) return Page();
 
             usage.Active = !usage.Active;
-            try { await _bus.Publish(usage); }
-            catch(Exception e) {
-                var a = e;
-            }
+            try { await _bus.Send(usage); } // Publish - Endpoint not working
+            catch(Exception e) { Console.WriteLine(e.Message); }
 
             return Page();
         }

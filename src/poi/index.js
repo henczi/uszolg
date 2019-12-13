@@ -85,7 +85,7 @@ app.get(prefix + '/del', function (req, res, next) {
 //status
 app.use(function (req, res, next) {
 	console.log(req.url)
-	res.json({status: "NOK"});
+	res.json({status: "OK"});
 });
 
 //500 - error

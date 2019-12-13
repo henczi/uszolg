@@ -70,6 +70,7 @@ services:
     build:
       context: ../feedback
       dockerfile: Dockerfile
+    stop_signal: SIGINT
     environment:
       - "PREFIX=/api/feedback"
     networks:

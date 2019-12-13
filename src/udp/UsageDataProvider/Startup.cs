@@ -14,7 +14,7 @@ namespace UsageDataProvider
 {
     public class Startup
     {
-        private static string uri = "rabbitmq://localhost/";
+        private static string host = "localhost";
         private static string queue = "usage";
         public Startup(IConfiguration configuration)
         {
@@ -32,7 +32,7 @@ namespace UsageDataProvider
                 x.AddBus(provider =>
                     Bus.Factory.CreateUsingRabbitMq(cfg =>
                     {
-                        cfg.Host(new Uri(uri),
+                        cfg.Host(new Uri("rabbitmq://" + host + "/"),
                             hostConfig =>
                             {
                                 hostConfig.Username("guest");
@@ -41,7 +41,7 @@ namespace UsageDataProvider
                         cfg.UseExtensionsLogging(provider.GetRequiredService<ILoggerFactory>());
                     }));
 
-                 EndpointConvention.Map<UsageState>(new Uri(uri+queue));
+                 EndpointConvention.Map<UsageState>(new Uri("rabbitmq://" + host + "/" +queue));
             });
         }
 

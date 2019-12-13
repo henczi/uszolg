@@ -3,6 +3,8 @@ var amqp = require('amqplib');
 var bodyParser = require('body-parser');
 var app = express();
 
+const prefix = process.env.PREFIX || '/api/usage';
+
 var queue = 'usage';
 const DB = {};
 
@@ -23,11 +25,21 @@ async function retryConnec(max) {
 	var conn = await retryConnec(10);
 	console.log('[RabbitMQ] Connected!');
 	var channel = await conn.createChannel();
-	var queueInfo = channel.assertQueue(queue, { durable: true });
-	channel.consume(queue, function(message) {
+	console.log('[RabbitMQ] Channel created!');
+
+	// TODO: RabbitMQ config
+	// Create Que, Exchange, and bind
+	var queueInfo = await channel.assertQueue(queue);
+	var exchangeInfo = await channel.assertExchange(queue, 'fanout');
+	await channel.bindQueue(queue, queue);
+
+	// Subscribe
+	var tag = await channel.consume(queue, function(message) {
 		if (message !== null) {
-			console.log('[QUE::msg] ' + message.content.toString());
-			console.log(message);
+			var msgData = JSON.parse(message.content.toString());
+			var usageStatusEvent = msgData.message;
+			console.log('[QUE::msg] ', usageStatusEvent);
+			DB[usageStatusEvent.key] = usageStatusEvent.active || false; // process event
 			channel.ack(message);
 		}
 	})
@@ -44,14 +56,20 @@ app.use(bodyParser.urlencoded({
 	extended: true
 }));
 
-//status
-app.post('/send', function (req, res, next) {
-	console.log(req.body);
+
+app.get(prefix + '/state', function (req, res, next) {
+	const keys = req.query.keys && req.query.keys.split(',') || undefined;
+	if (keys) {
+		const ret = {};
+		keys.forEach(x => ret[x] = DB[x]);
+		return res.json(ret);
+	}
+	return res.json({status: "NOK"});
 });
 
 //status
 app.use(function (req, res, next) {
-	res.json({status: "OK-NOK"});
+	res.json({status: "OK"});
 });
 
 //500 - error

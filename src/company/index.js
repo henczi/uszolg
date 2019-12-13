@@ -84,7 +84,7 @@ app.get(prefix + '/all', async function (req, res, next) {
 
 //status
 app.use(function (req, res, next) {
-	res.json({status: "NOK"});
+	res.json({status: "OK"});
 });
 
 //500 - error
