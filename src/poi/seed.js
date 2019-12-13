@@ -1553,7 +1553,7 @@ module.exports = [
 		"key": "1",
 		"name": "Pala utca 2. (e-Mobi, 22kW DC)",
 		"connector": "13",
-		"kilowatts": "",
+		"kilowatts": "120",
 		"stations": 1,
 		"company": "Y"
 	},
@@ -1670,8 +1670,8 @@ module.exports = [
 		"lat": 47.474592,
 		"key": "3",
 		"name": "Allee P1 (E/D) +P3",
-		"connector": "7,7,7,10,7,7,7,7,7,7,7",
-		"kilowatts": ",,,,,,,,,,",
+		"connector": "7,10",
+		"kilowatts": "22,50",
 		"stations": 11,
 		"company": "G"
 	},
@@ -2229,8 +2229,8 @@ module.exports = [
 		"lat": 47.512906,
 		"key": "2",
 		"name": "NH Hotel Budapest AC",
-		"connector": "7,7,7,7",
-		"kilowatts": ",,,",
+		"connector": "7",
+		"kilowatts": "120",
 		"stations": 4,
 		"company": "G"
 	},
