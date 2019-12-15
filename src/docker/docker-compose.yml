@@ -51,6 +51,8 @@ services:
     labels:
       - "traefik.enable=true" # Enable publishing this service by Traefik
       - "traefik.http.routers.company.rule=PathPrefix(`/api/company`)" # Routing rule
+      - 'traefik.http.middlewares.user-auth.forwardauth.address=http://userauth/api/auth'
+      - 'traefik.http.routers.company.middlewares=user-auth@docker'
 
   poi:
     image: "${REGISTRY_URL:-micros}/poi:${IMAGE_TAG:-latest}"
@@ -64,6 +66,8 @@ services:
     labels:
       - "traefik.enable=true" # Enable publishing this service by Traefik
       - "traefik.http.routers.poi.rule=PathPrefix(`/api/poi`)" # Routing rule
+      - 'traefik.http.middlewares.user-auth.forwardauth.address=http://userauth/api/auth'
+      - 'traefik.http.routers.poi.middlewares=user-auth@docker'
 
   feedback:
     image: "${REGISTRY_URL:-micros}/feedback:${IMAGE_TAG:-latest}"
@@ -78,6 +82,8 @@ services:
     labels:
       - "traefik.enable=true" # Enable publishing this service by Traefik
       - "traefik.http.routers.feedback.rule=PathPrefix(`/api/feedback`)" # Routing rule
+      - 'traefik.http.middlewares.user-auth.forwardauth.address=http://userauth/api/auth'
+      - 'traefik.http.routers.feedback.middlewares=user-auth@docker'
 
   usage:
     image: "${REGISTRY_URL:-micros}/usage:${IMAGE_TAG:-latest}"
@@ -93,6 +99,8 @@ services:
     labels:
       - "traefik.enable=true" # Enable publishing this service by Traefik
       - "traefik.http.routers.usage.rule=PathPrefix(`/api/usage`)" # Routing rule
+      - 'traefik.http.middlewares.user-auth.forwardauth.address=http://userauth/api/auth'
+      - 'traefik.http.routers.usage.middlewares=user-auth@docker'
   
   udp:
     image: "${REGISTRY_URL:-micros}/udp:${IMAGE_TAG:-latest}"
@@ -111,6 +119,21 @@ services:
     labels:
       - "traefik.enable=true" # Enable publishing this service by Traefik
       - "traefik.http.routers.udp.rule=PathPrefix(`/udp`)" # Routing rule
+  
+  userauth:
+    image: "${REGISTRY_URL:-micros}/userauth:${IMAGE_TAG:-latest}"
+    ports:
+      - "20080:80"
+    build:
+      context: ../user-auth
+      dockerfile: Dockerfile
+    networks:
+      - micros-network
+    environment:
+      - "PREFIX=/api/auth"
+    labels:
+      - "traefik.enable=true" # Enable publishing this service by Traefik
+      - "traefik.http.routers.userauth.rule=PathPrefix(`/api/auth`)" # Routing rule
 
   userfrontend:
     image: "${REGISTRY_URL:-micros}/userfrontend:${IMAGE_TAG:-latest}"
