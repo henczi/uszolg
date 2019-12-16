@@ -16,6 +16,7 @@
         v-bind:class="{ active: feedbackVisible }"
         @close="closeFeedback()"
       />
+      <News id="news-box" class="position-absolute w-100 h-100" v-bind:class="{ active: newsVisible }" @close="closeNews()" />
     </div>
   </div>
 </template>
@@ -26,6 +27,7 @@ import Map from "./components/Map.vue";
 import Header from "./components/Header.vue";
 import Info from "./components/Info.vue";
 import Feedback from "./components/Feedback.vue";
+import News from "./components/News.vue";
 
 import locImg from './assets/loc.png';
 import unknownImg from './assets/unknown.png';
@@ -38,12 +40,14 @@ export default {
     Header,
     Map,
     Info,
-    Feedback
+    Feedback,
+    News
   },
   data() { 
     return {
       infoVisible: false,
       feedbackVisible: false,
+      newsVisible: false,
       selected: null,
       markers: [],
       markersKeyMap: {},
@@ -56,6 +60,7 @@ export default {
     },
     openInfo() {
       this.closeFeedback();
+      this.closeNews();
       this.infoVisible = true;
     },
     closeFeedback() {
@@ -63,11 +68,21 @@ export default {
     },
     openFeedback() {
       this.closeInfo();
+      this.closeNews();
       this.feedbackVisible = true;
+    },
+    closeNews() {
+      this.newsVisible = false;
+    },
+    openNews() {
+      this.closeInfo();
+      this.closeFeedback();
+      this.newsVisible = true;
     },
     headerAction(action) {
       switch(action) {
-        case 'feedback': this.openFeedback(); break;
+        case 'feedback': this.feedbackVisible ? this.closeFeedback() : this.openFeedback(); break;
+        case 'news': this.newsVisible ? this.closeNews() : this.openNews(); break;
       }
     },
     select(idx) {
@@ -153,5 +168,14 @@ export default {
 
 #feedback-box.active {
   top: 0;
+}
+
+#news-box {
+  left: -100%;
+  transition: all 0.2s;
+}
+
+#news-box.active {
+  left: 0;
 }
 </style>

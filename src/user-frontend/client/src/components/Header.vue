@@ -33,6 +33,12 @@
       </div>
       <div
         class="ml-auto flex-grow-0 flex-shrink-0 d-flex align-items-center"
+        @click="$emit('action', 'news')"
+      >
+        <i class="far fa-2x fa-newspaper"></i>
+      </div>
+      <div
+        class="ml-auto flex-grow-0 flex-shrink-0 d-flex align-items-center"
         @click="$emit('action', 'feedback')"
       >
         <i class="fas fa-2x fa-comment-medical"></i>

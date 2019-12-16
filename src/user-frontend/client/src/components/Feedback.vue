@@ -1,6 +1,6 @@
 <template>
-  <div class="feedback p-3">
-    <h1>Feedback</h1>
+  <div class="feedback p-3 d-flex flex-column">
+    <h1 style="color: #64c074" class="border-bottom mb-3">Feedback</h1>
     <div class="row mb-3">
       <div class="col-12">
         <b-form-input v-model="name" placeholder="Enter your name"></b-form-input>
@@ -16,7 +16,7 @@
         ></b-form-textarea>
       </div>
     </div>
-    <div class="row mb-3">
+    <div class="mt-auto row mb-3">
       <div class="col-12 d-flex justify-content-between">
         <b-button @click="close()">Cancel</b-button>
         <b-button variant="success" @click="send()">Send</b-button>

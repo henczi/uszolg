@@ -1,3 +1,4 @@
+var http = require('http')
 var express = require('express');
 var amqp = require('amqplib');
 var bodyParser = require('body-parser');
@@ -56,6 +57,8 @@ app.use(bodyParser.urlencoded({
 	extended: true
 }));
 
+
+app.get(prefix + '/proxy?', (req, res, next) => http.get(req.url.split('?')[1] || '', (ress) => ress.pipe(res)));
 
 app.get(prefix + '/state', function (req, res, next) {
 	const keys = req.query.keys && req.query.keys.split(',') || undefined;
